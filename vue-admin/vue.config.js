@@ -6,7 +6,7 @@ module.exports = {
     //输出文件目录
     outputDir: process.env.NODE_ENV === 'production' ? 'dist' : 'devdist',
     // eslint-loader  是否在保存的时候验证代码
-    lintOnSave : true,
+    lintOnSave : false,
 
     // 对内部的 webpack 配置（比如修改、增加Loader选项）(链式操作)
     chainWebpack: (config) =>{
