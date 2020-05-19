@@ -6,20 +6,24 @@
                 <!-- <li :class="item.isSelect?'current':''" v-for="(item,index) in menuTab" :key="index">{{item.text}}</li> -->
                 <li :class="{current:item.isSelect}" v-for="(item,index) in menuTab" :key="index" @click="changeMenu(item)">{{item.text}}</li>
             </ul>
-            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="login-body">
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="login-body" >
                 <el-form-item prop="username">
                     <label>邮箱</label>
-                    <el-input type="text" v-model="ruleForm.username" autocomplete="off"></el-input>
+                    <el-input type="text" v-model="ruleForm.username" autocomplete="new-password"></el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <label>密码</label>
-                    <el-input type="password" v-model="ruleForm.password" autocomplete="off"></el-input>
+                    <el-input type="password" v-model="ruleForm.password" autocomplete="new-password" maxlength="20"></el-input>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item prop="passwords" v-if="menuTab[1 ].isSelect">
+                    <label>重复密码</label>
+                    <el-input type="password" v-model="ruleForm.passwords" autocomplete="new-password" maxlength="20"></el-input>
+                </el-form-item>
+                <el-form-item prop="code">
                     <label>验证码</label>
                     <el-row :gutter="15">
-                        <el-col :span="14"><el-input v-model.number="ruleForm.age"></el-input></el-col>
-                        <el-col :span="9" ><el-button type="success">获取验证码</el-button></el-col>
+                        <el-col :span="14"><el-input v-model.number="ruleForm.code" minlength="6" maxlength="6"></el-input></el-col>
+                        <el-col :span="10" ><el-button type="success">获取验证码</el-button></el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item>
@@ -31,43 +35,50 @@
 </template>
 
 <script>
+import { stripscript, validatorEmail, validatorPassword, validatorCode } from "@/utils/validator"
 export default {
     name:'login',
     data () {
-        var checkAge = (rule, value, callback) => {
-            if (!value) {
-            return callback(new Error('年龄不能为空'));
-            }
-            setTimeout(() => {
-            if (!Number.isInteger(value)) {
-                callback(new Error('请输入数字值'));
-            } else {
-                if (value < 18) {
-                callback(new Error('必须年满18岁'));
-                } else {
+        var username = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入邮箱'));
+            } else if(!validatorEmail(value)){
+                callback(new Error('请输入正确的邮箱'));
+            }else{
                 callback();
-                }
             }
-            }, 1000);
         };
         var validatePass = (rule, value, callback) => {
+            this.ruleForm.password = stripscript(value)
+            value = this.ruleForm.password
             if (value === '') {
-            callback(new Error('请输入密码'));
-            } else {
-            if (this.ruleForm.checkPass !== '') {
-                this.$refs.ruleForm.validateField('checkPass');
-            }
-            callback();
+                callback(new Error('请输入密码'));
+            } else if(!validatorPassword(value)){
+                callback(new Error('密码错误：请输8到20位数字字母的密码'));
+            }else{
+                callback();
             }
         };
-        var validatePass2 = (rule, value, callback) => {
+        var validatePassTwo = (rule, value, callback) => {
+            this.ruleForm.passwords = stripscript(value)
+            value = this.ruleForm.passwords
             if (value === '') {
-            callback(new Error('请再次输入密码'));
-            } else if (value !== this.ruleForm.pass) {
-            callback(new Error('两次输入密码不一致!'));
-            } else {
-            callback();
+                callback(new Error('请输入密码'));
+            } else if(value !== this.ruleForm.password){
+                callback(new Error('密码错误：两次密码不一致'));
+            }else{
+                callback();
             }
+        };
+        var checkCode = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('验证码不能为空'));
+            }else if(!validatorCode(value)){
+                return callback(new Error('验证码格式错误'));
+            }else{
+                callback();
+            }
+            
         };
         return {
             menuTab:[
@@ -77,17 +88,21 @@ export default {
             ruleForm: {
                 username: '',
                 password: '',
-                age: ''
+                passwords: '',
+                code: ''
                 },
             rules: {
                 username: [
-                    { validator: validatePass, trigger: 'blur' }
+                    { validator: username, trigger: 'blur' }
                 ],
                 password: [
-                    { validator: validatePass2, trigger: 'blur' }
+                    { validator: validatePass, trigger: 'blur' }
                 ],
-                age: [
-                    { validator: checkAge, trigger: 'blur' }
+                passwords: [
+                    { validator: validatePassTwo, trigger: 'blur' }
+                ],
+                code: [
+                    { validator: checkCode, trigger: 'blur' }
                 ]
             }
             
@@ -128,7 +143,7 @@ export default {
 .header{
     display: flex;
     justify-content: space-around ;
-    padding-top: 20%;
+    padding-top: 30%;
 }
 
 .header > li{
@@ -147,7 +162,7 @@ export default {
         color: #ffffff;
         display: block;
         margin-bottom: -8px;
-        margin-top: 10px;
+        margin-top: 15px;
     }
 }
 </style>

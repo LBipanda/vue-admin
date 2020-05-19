@@ -13,7 +13,18 @@ module.exports = {
 
     },
     configureWebpack: (config) =>{
-
+        config.resolve = { // 配M解析别名
+            extensions: ['.js', '.json', '.vue'],//自动添加文件名后缀
+            alias: {
+                '@': path.resolve(__dirname, './src'),
+                // 'public': path.resolve(_dirname, './public'),
+                '@c': path.resolve(__dirname, './src/components'),
+                // 'common': path.resolve(_dirname, './src/common'),
+                // 'api': path.resolve(_dimame, './src/ae-i'),
+                // 'views': path.resolve(_dirname, './src/views'),
+                // 'data': path.resolve(_dirname, './src/data')
+            }
+        }
     },
     // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建,生产环境是否生产souceMap文件
     productionSourceMap: false,
