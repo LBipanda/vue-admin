@@ -36,13 +36,10 @@
 
 <script>
 import { stripscript, validatorEmail, validatorPassword, validatorCode } from "@/utils/validator"
-import { ref, reactive, isRef, toRefs } from "@vue/composition-api";
 export default {
     name:'login',
-    setup(props,context){
-        // 这里放置vue2.0的data数据、method里的自定义函数、生命周期
-
-const validateEmail = ((rule, value, callback) => {
+    data () {
+        var username = (rule, value, callback) => {
             if (value === '') {
                 callback(new Error('请输入邮箱'));
             } else if(!validatorEmail(value)){
@@ -50,10 +47,10 @@ const validateEmail = ((rule, value, callback) => {
             }else{
                 callback();
             }
-        })
-        const validatePass = ((rule, value, callback) => {
-            ruleForm.password = stripscript(value)
-            value = ruleForm.password
+        };
+        var validatePass = (rule, value, callback) => {
+            this.ruleForm.password = stripscript(value)
+            value = this.ruleForm.password
             if (value === '') {
                 callback(new Error('请输入密码'));
             } else if(!validatorPassword(value)){
@@ -61,11 +58,10 @@ const validateEmail = ((rule, value, callback) => {
             }else{
                 callback();
             }
-        })
-        const validatePassTwo = ((rule, value, callback) => {
-            if(menuTab[0].isSelect){ callback() }
-            ruleForm.passwords = stripscript(value)
-            value = ruleForm.passwords
+        };
+        var validatePassTwo = (rule, value, callback) => {
+            this.ruleForm.passwords = stripscript(value)
+            value = this.ruleForm.passwords
             if (value === '') {
                 callback(new Error('请输入密码'));
             } else if(value !== this.ruleForm.password){
@@ -73,8 +69,8 @@ const validateEmail = ((rule, value, callback) => {
             }else{
                 callback();
             }
-        })
-        const validateCode = ((rule, value, callback) => {
+        };
+        var checkCode = (rule, value, callback) => {
             if (!value) {
                 return callback(new Error('验证码不能为空'));
             }else if(!validatorCode(value)){
@@ -82,77 +78,56 @@ const validateEmail = ((rule, value, callback) => {
             }else{
                 callback();
             }
-        })
-
-        /*
-        *  声明数据
-        */
-        // 通过ref声明基础类型数据（ref对象），接受一个内部值并返回一个反应性且可变的ref对象。ref对象具有.value指向内部值的单个属性。通过.value获取值
-        const tempAddress = ref("长沙")
-        // console.log(tempAddress.value)
-        // 通过reactive方法来声明引用类型数据（反应对象），这相当于2.x的Vue.observable()。
-        const menuTab = reactive([
-            {text:'登录',isSelect: true},
-            {text:'注册',isSelect: false},
-        ])
-        const ruleForm = reactive({
-            username: '',
-            password: '',
-            passwords: '',
-            code: ''
-        })
-        const rules = reactive({
-            username: [
-                { validator: validateEmail, trigger: 'blur' }
+            
+        };
+        return {
+            menuTab:[
+                {text:'登录',isSelect: true},
+                {text:'注册',isSelect: false},
             ],
-            password: [
-                { validator: validatePass, trigger: 'blur' }
-            ],
-            passwords: [
-                { validator: validatePassTwo, trigger: 'blur' }
-            ],
-            code: [
-                { validator: validateCode, trigger: 'blur' }
-            ]
-        })
-        // 通过isRef() 检查值是否是引用对象。返回true或者false
-            // console.log(isRef(tempAddress));//值类型
-            // console.log(isRef(menuTab));//引用类型
-        
-        // toRefs 将反应对象（reactive）转换为普通的ref对象（ref），保证对象解构或扩展运算符时不会丢失原有响应式对象的响应
-        // function useFeatureX() {
-        //     const state = reactive({
-        //         foo: 1,
-        //         bar: 2
-        //     })
-        //     return toRefs(state)
-        // }
-        // const { foo, bar } = useFeatureX()
-        // console.log(foo)
-        // console.log(bar.value)
-        /*
-        *  声明函数
-        */
-        const changeMenu = (item =>{
-            menuTab.forEach(res =>{
+            ruleForm: {
+                username: '',
+                password: '',
+                passwords: '',
+                code: ''
+                },
+            rules: {
+                username: [
+                    { validator: username, trigger: 'blur' }
+                ],
+                password: [
+                    { validator: validatePass, trigger: 'blur' }
+                ],
+                passwords: [
+                    { validator: validatePassTwo, trigger: 'blur' }
+                ],
+                code: [
+                    { validator: checkCode, trigger: 'blur' }
+                ]
+            }
+            
+        }
+    },
+    methods:{
+        changeMenu(item){
+            this.menuTab.forEach(res =>{
                 if(res.isSelect){
                     res.isSelect = false;
                 }
             });
             item.isSelect = true;
-        })
-        
-        return {
-            menuTab,
-            ruleForm,
-            rules,
-            changeMenu,
-            validateEmail,
-            validatePass,
-            validatePassTwo,
-            validateCode
+        },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+            if (valid) {
+                alert('submit!');
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+            });
         }
-    },
+    }
 }
 </script>
 
