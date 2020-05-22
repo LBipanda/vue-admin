@@ -42,7 +42,7 @@ export default {
     setup(props,context){
         // 这里放置vue2.0的data数据、method里的自定义函数、生命周期
 
-const validateEmail = ((rule, value, callback) => {
+        const validateEmail = ((rule, value, callback) => {
             if (value === '') {
                 callback(new Error('请输入邮箱'));
             } else if(!validatorEmail(value)){
