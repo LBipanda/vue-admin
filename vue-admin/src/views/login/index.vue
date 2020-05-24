@@ -23,7 +23,7 @@
                     <label>验证码</label>
                     <el-row :gutter="15">
                         <el-col :span="14"><el-input v-model.number="ruleForm.code" minlength="6" maxlength="6"></el-input></el-col>
-                        <el-col :span="10" ><el-button type="success">获取验证码</el-button></el-col>
+                        <el-col :span="10" ><el-button type="success" @click="getSms()">获取验证码</el-button></el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item>
@@ -36,7 +36,8 @@
 
 <script>
 import { stripscript, validatorEmail, validatorPassword, validatorCode } from "@/utils/validator"
-import { ref, reactive, isRef, toRefs } from "@vue/composition-api";
+import { ref, reactive, isRef, toRefs, onMounted } from "@vue/composition-api";
+import loginApi from '@/api/login'
 export default {
     name:'login',
     setup(props,context){
@@ -118,7 +119,7 @@ export default {
         // 通过isRef() 检查值是否是引用对象。返回true或者false
             // console.log(isRef(tempAddress));//值类型
             // console.log(isRef(menuTab));//引用类型
-        
+
         // toRefs 将反应对象（reactive）转换为普通的ref对象（ref），保证对象解构或扩展运算符时不会丢失原有响应式对象的响应
         // function useFeatureX() {
         //     const state = reactive({
@@ -141,7 +142,16 @@ export default {
             });
             item.isSelect = true;
         })
-        
+        const getSms = (() =>{
+            loginApi.GetSms()
+        })
+
+        /**
+         * 生命周期（挂载完成后）
+         */
+        onMounted(() => {
+
+        })
         return {
             menuTab,
             ruleForm,
