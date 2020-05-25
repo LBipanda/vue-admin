@@ -157,6 +157,7 @@ export default {
             ruleForm,
             rules,
             changeMenu,
+            getSms,
             validateEmail,
             validatePass,
             validatePassTwo,

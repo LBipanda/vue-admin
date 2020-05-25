@@ -7,7 +7,7 @@ export default {
 GetSms(){
     service.request({
         method: 'post',
-        url: '/getSms',
+        url: '/getSms/',
         data: {}
     })
 }

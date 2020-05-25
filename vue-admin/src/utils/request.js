@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 // 创建axios
+const BASEURL = process.env.NODE_ENV === 'production' ? '' : '/devApi';
 const service = axios.create({
-    baseURL: 'https://some-domain.com/api/',
+    baseURL: BASEURL, // http://10.68.216.186:8080/devApi/ == http://www.web-jshtml.cn/productapi
     timeout: 1000
 })
 
