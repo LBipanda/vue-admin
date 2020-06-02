@@ -15,7 +15,7 @@
                     <label>密码</label>
                     <el-input type="password" v-model="ruleForm.password" autocomplete="new-password" maxlength="20"></el-input>
                 </el-form-item>
-                <el-form-item prop="passwords" v-if="menuTab[1 ].isSelect">
+                <el-form-item prop="passwords" v-if="menuTab[1].isSelect">
                     <label>重复密码</label>
                     <el-input type="password" v-model="ruleForm.passwords" autocomplete="new-password" maxlength="20"></el-input>
                 </el-form-item>
@@ -27,7 +27,7 @@
                     </el-row>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm')" class="w100pc mt-20">提交</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')" class="w100pc mt-20"><span v-if="menuTab[0].isSelect">登录</span><span v-else>注册</span></el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -40,7 +40,8 @@ import { ref, reactive, isRef, toRefs, onMounted } from "@vue/composition-api";
 import loginApi from '@/api/login'
 export default {
     name:'login',
-    setup(props,context){
+    // setup(props,context){
+    setup(props,{ refs , root }){
         // 这里放置vue2.0的data数据、method里的自定义函数、生命周期
 
         const validateEmail = ((rule, value, callback) => {
@@ -97,8 +98,8 @@ export default {
             {text:'注册',isSelect: false},
         ])
         const ruleForm = reactive({
-            username: '',
-            password: '',
+            username: 'libinnzs@163.com',
+            password: '123456',
             passwords: '',
             code: ''
         })
@@ -143,7 +144,14 @@ export default {
             item.isSelect = true;
         })
         const getSms = (() =>{
-            loginApi.GetSms()
+            loginApi.GetSms(ruleForm).then(res => {
+                console.log(res)
+                if(res.data.resCode == '0'){
+                    root.message.success(res.data.message)
+                }
+            }).catch(err => {
+                console.log(err)
+            })
         })
 
         /**

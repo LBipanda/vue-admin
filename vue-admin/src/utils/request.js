@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Message } from 'element-ui';
 
 // 创建axios
 const BASEURL = process.env.NODE_ENV === 'production' ? '' : '/devApi';
@@ -21,6 +22,12 @@ service.interceptors.request.use((config) => {
 
 // 添加响应拦截器
 service.interceptors.response.use((response) => {
+    if(response.data.resCode != '0'){
+        Message.error(response.data.message)
+        return Promise.reject(response);
+    }else{
+        return response
+    }
     // 对响应数据做点什么
     return response;
 }, function (error) {

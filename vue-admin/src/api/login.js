@@ -4,11 +4,11 @@ export default {
 /**
  * 获取验证码
  */
-GetSms(){
-    service.request({
+GetSms(data){
+    return service.request({
         method: 'post',
         url: '/getSms/',
-        data: {}
+        data: data
     })
 }
 }
