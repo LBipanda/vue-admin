@@ -23,7 +23,7 @@
                     <label>验证码</label>
                     <el-row :gutter="15">
                         <el-col :span="14"><el-input v-model.number="ruleForm.code" minlength="6" maxlength="6"></el-input></el-col>
-                        <el-col :span="10" ><el-button type="success" @click="getSms()">获取验证码</el-button></el-col>
+                        <el-col :span="10" ><el-button type="success" @click="getSms()" :disabled="SmsStatus"><span>{{SmsText}}</span></el-button></el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item>
@@ -35,8 +35,9 @@
 </template>
 
 <script>
-import { stripscript, validatorEmail, validatorPassword, validatorCode } from "@/utils/validator"
-import { ref, reactive, isRef, toRefs, onMounted } from "@vue/composition-api";
+import sha1 from 'js-sha1'
+import { stripscript, validatorEmail, validatorPassword, validatorCode } from "@/utils/validator";
+import { ref, reactive, isRef, toRefs, onMounted, computed } from "@vue/composition-api";
 import loginApi from '@/api/login'
 export default {
     name:'login',
@@ -86,11 +87,14 @@ export default {
             }
         })
 
-        /*
+        /************************************************** 
         *  声明数据
         */
         // 通过ref声明基础类型数据（ref对象），接受一个内部值并返回一个反应性且可变的ref对象。ref对象具有.value指向内部值的单个属性。通过.value获取值
         const tempAddress = ref("长沙")
+        const SmsStatus = ref(false)
+        const SmsText = ref("获取验证码")
+        const timer = ref(null)
         // console.log(tempAddress.value)
         // 通过reactive方法来声明引用类型数据（反应对象），这相当于2.x的Vue.observable()。
         const menuTab = reactive([
@@ -99,8 +103,8 @@ export default {
         ])
         const ruleForm = reactive({
             username: 'libinnzs@163.com',
-            password: '123456',
-            passwords: '',
+            password: 'lb123456',
+            passwords: 'lb123456',
             code: ''
         })
         const rules = reactive({
@@ -110,12 +114,12 @@ export default {
             password: [
                 { validator: validatePass, trigger: 'blur' }
             ],
-            passwords: [
-                { validator: validatePassTwo, trigger: 'blur' }
-            ],
-            code: [
-                { validator: validateCode, trigger: 'blur' }
-            ]
+            // passwords: [
+            //     { validator: validatePassTwo, trigger: 'blur' }
+            // ],
+            // code: [
+            //     { validator: validateCode, trigger: 'blur' }
+            // ]
         })
         // 通过isRef() 检查值是否是引用对象。返回true或者false
             // console.log(isRef(tempAddress));//值类型
@@ -132,7 +136,8 @@ export default {
         // const { foo, bar } = useFeatureX()
         // console.log(foo)
         // console.log(bar.value)
-        /*
+
+        /**************************************************************
         *  声明函数
         */
         const changeMenu = (item =>{
@@ -141,20 +146,91 @@ export default {
                     res.isSelect = false;
                 }
             });
+            // ruleForm.code = '';
+            SmsText.value = "获取验证码"
+            SmsStatus.value = false
+            clearInterval(timer.value)
+            refs['ruleForm'].resetFields();
+
             item.isSelect = true;
         })
+        // 获取验证码
         const getSms = (() =>{
-            loginApi.GetSms(ruleForm).then(res => {
-                console.log(res)
-                if(res.data.resCode == '0'){
-                    root.message.success(res.data.message)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+            SmsStatus.value = true;
+            countDown(60)
+            setTimeout(() => {
+                loginApi.GetSms(ruleForm).then(res => {
+                    console.log(res)
+                    if(res.data.resCode == '0'){
+                        root.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        });
+                    }
+                }).catch(err => {
+                    SmsStatus.value = false
+                    SmsText.value = "重新获取验证码"
+                    console.log(err)
+                })
+            },3000)
         })
-
-        /**
+        // 倒计时
+        const countDown = ((tempTime) =>{
+            timer.value = setInterval(() => {
+                tempTime--;
+                SmsText.value = `发送中${tempTime}S`;
+                if(tempTime == 0){
+                    SmsStatus.value = false;
+                    SmsText.value = '再次获取';
+                    clearInterval(timer.value)
+                }
+            },1000)
+        })
+        // 登录注册
+        const submitForm = ((formName) => {
+            refs[formName].validate((valid) => {
+                console.log(valid)
+                if (valid) {
+                    let apiName = menuTab.filter(res => res.isSelect == true);                    
+                    if (apiName[0].text == '登录'){
+                        apiName = 'Login'
+                    }else{
+                        apiName = 'Register'
+                    }
+                    
+                    sha1(ruleForm.password)
+                    loginApi[apiName](ruleForm).then(res => {
+                        if(apiName == 'Register'){
+                            if(res.data.resCode == '0'){
+                                root.$message({
+                                    message: res.data.message,
+                                    type: 'success'
+                                });
+                                changeMenu(menuTab[0])
+                            }else{
+                                root.$message({
+                                    message: res.data.message,
+                                    type: 'error'
+                                });
+                            }
+                        }else{
+                            if(res.data.resCode == '0'){
+                                root.$message({
+                                    message: res.data.message,
+                                    type: 'success'
+                                });
+                            }
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        })
+        /**************************************************************
          * 生命周期（挂载完成后）
          */
         onMounted(() => {
@@ -162,10 +238,14 @@ export default {
         })
         return {
             menuTab,
+            SmsStatus,
+            SmsText,
+            timer,
             ruleForm,
             rules,
             changeMenu,
             getSms,
+            submitForm,
             validateEmail,
             validatePass,
             validatePassTwo,
