@@ -219,6 +219,9 @@ export default {
                                     message: res.data.message,
                                     type: 'success'
                                 });
+                                root.$router.push({
+                                    name: 'console'
+                                })
                             }
                         }
                     }).catch(err => {
