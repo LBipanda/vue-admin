@@ -6,22 +6,81 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    redirect: "/login"
+    redirect: "/login",
+    hidden: true,
+    meta:{
+      name: '主页'
+    }
   },
   {
     path: "/login",
     name: "login",
-    component: () => import("@/views/login/index.vue")
+    hidden: true,
+    component: () => import("@/views/login/index.vue"),
+    meta:{
+      name: '登录'
+    }
   },
   {
     path: "/console",
     name: "console",
+    redirect: '/index',
     component: () => import("@/views/Layout/index.vue"),
+    meta:{
+      name: '控制台'
+    },
     children:[
       {
-        path: "/console",
-        name: "console",
+        path: "/index",
+        name: "index",
         component: () => import("@/views/Console/index.vue"),
+        meta:{
+          name: '首页'
+        }
+      }
+    ]
+  },
+  {
+    path: "/user",
+    name: "user",
+    component: () => import("@/views/Layout/index.vue"),
+    meta:{
+      name: '用户管理'
+    },
+    children:[
+      {
+        path: "/userList",
+        name: "userList",
+        component: () => import("@/views/user/userList.vue"),
+        meta:{
+          name: '用户列表'
+        }
+      }
+    ]
+  },
+  {
+    path: "/info",
+    name: "info",
+    component: () => import("@/views/Layout/index.vue"),
+    meta:{
+      name: '信息管理'
+    },
+    children:[
+      {
+        path: "/infoIndex",
+        name: "infoIndex",
+        component: () => import("@/views/info/index.vue"),
+        meta:{
+          name: '信息列表'
+        },
+      },
+      {
+        path: "/infoCategory",
+        name: "infoCategory",
+        component: () => import("@/views/info/category.vue"),
+        meta:{
+          name: '信息分类'
+        },
       }
     ]
   }
