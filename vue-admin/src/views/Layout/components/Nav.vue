@@ -14,7 +14,7 @@
                 <el-submenu v-if="!item.hidden" :key="index" :index="index + ''" >
                     <!-- 一级菜单 -->
                     <template slot="title">
-                    <i class="el-icon-location"></i>
+                    <i :class="item.meta.icon"></i>
                     <span slot="title">{{item.meta.name}}</span>
                     </template>
                     <!-- 子菜单 -->
@@ -27,6 +27,7 @@
                 </el-submenu>
             </template>
         </el-menu>
+        <svg-icon iconName="common" iconClass="common" />
     </div>
 </template>
 
@@ -35,7 +36,6 @@ import {ref ,reactive} from '@vue/composition-api';
 export default {
     name: 'navMenu',
     setup(props,{ refs , root }){
-        console.log(root.$router)
         /*****************************************
          * 声明数据
          */
@@ -70,6 +70,10 @@ export default {
     width: $navMenu;
     height: 100vh;
     background-color: #344a5f;
+    .svg:{
+        font-style: 20px;
+        margin-right: 10px;
+    }
 }
 
 </style>

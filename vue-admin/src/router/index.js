@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
+import Layout from '@/views/Layout/index'
 
 const routes = [
   {
@@ -25,9 +26,10 @@ const routes = [
     path: "/console",
     name: "console",
     redirect: '/index',
-    component: () => import("@/views/Layout/index.vue"),
+    component: Layout,
     meta:{
-      name: '控制台'
+      name: '控制台',
+      icon: 'el-icon-video-camera-solid'
     },
     children:[
       {
@@ -43,9 +45,10 @@ const routes = [
   {
     path: "/user",
     name: "user",
-    component: () => import("@/views/Layout/index.vue"),
+    component: Layout,
     meta:{
-      name: '用户管理'
+      name: '用户管理',
+      icon: 'el-icon-s-unfold'
     },
     children:[
       {
@@ -61,9 +64,10 @@ const routes = [
   {
     path: "/info",
     name: "info",
-    component: () => import("@/views/Layout/index.vue"),
+    component: Layout,
     meta:{
-      name: '信息管理'
+      name: '信息管理',
+      icon: 'el-icon-coordinate'
     },
     children:[
       {
