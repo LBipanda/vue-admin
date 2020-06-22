@@ -1,7 +1,9 @@
 <!-- 页面 -->
 <template>
     <div id="main-wrap">
-        <router-view></router-view>
+        <div class="content">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
@@ -23,5 +25,11 @@ export default {
     border: 30px solid #f7f7f7;
     border-bottom: none;
     -webkit-box-sizing: border;
+    padding-left: 30px;
+}
+.content{
+    height: 100%;
+    width: 100%;
+    padding: 15px 0;
 }
 </style>

@@ -29,7 +29,7 @@ const routes = [
     component: Layout,
     meta:{
       name: '控制台',
-      icon: 'el-icon-video-camera-solid'
+      icon: 'console'
     },
     children:[
       {
@@ -48,7 +48,7 @@ const routes = [
     component: Layout,
     meta:{
       name: '用户管理',
-      icon: 'el-icon-s-unfold'
+      icon: 'user'
     },
     children:[
       {
@@ -67,7 +67,7 @@ const routes = [
     component: Layout,
     meta:{
       name: '信息管理',
-      icon: 'el-icon-coordinate'
+      icon: 'info'
     },
     children:[
       {

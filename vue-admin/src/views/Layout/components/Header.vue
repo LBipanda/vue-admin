@@ -1,7 +1,14 @@
 <!-- 页面 -->
 <template>
     <div id="header-wrap">
-        头部页面
+        <svg-icon iconName="menu" iconClass="menu" />
+        <div class="flex aic h100pc">
+            <div class="flex aic h100pc bdr mt-10 mb-10 pr-10">
+                <img src="aa" />
+                <p class="lh100pc ml-15">管理员</p>
+            </div>
+            <svg-icon iconName="main" iconClass="main" class="pl-10" />
+        </div>
     </div>
 </template>
 
@@ -21,6 +28,13 @@ export default {
     right: 0;
     height: 75px;
     background-color: #fff;
-    -webkit-box-shadow: 0 3px 16px 0 rgba(0,0,0,0.1)
+    -webkit-box-shadow: 0 3px 16px 0 rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    svg{
+        font-size: 35px;
+    }
 }
 </style>

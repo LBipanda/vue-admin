@@ -1,6 +1,6 @@
 <template>
     <svg :class="svgClass" aria-hidden="true">
-        <use :xlink:href="svgName"></use>
+        <use :xlink:href="svgName" ></use>
     </svg>
 </template>
 
@@ -33,7 +33,7 @@ export default {
         /**
         * computed 监听属性变化，并计算属性
         */
-        const svgName = computed(() => { `#icon-${props.iconName}`})
+        const svgName = computed(() => `#icon-${props.iconName}`)
         const svgClass = computed(() => {
             if(props.iconClass){
                 return `svg-icon ${props.iconClass}`
@@ -41,7 +41,6 @@ export default {
                 return `svg-icon`
             }
         })
-
         return {
             msg,
             svgName,
@@ -54,7 +53,7 @@ export default {
 .svg-icon {
     width: 1em;
     height: 1em;
-    font-style: 20px;
-    color: red;
+    fill: currentColor;
+    // color: red;
 }
 </style>

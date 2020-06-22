@@ -1,6 +1,7 @@
 <!-- 页面 -->
 <template>
     <div id="nav-wrap">
+        <div class="logo"><img src="../../../assets/logo.png" /></div>
         <el-menu 
         default-active="1-4-1" 
         class="el-menu-vertical-demo" 
@@ -14,7 +15,8 @@
                 <el-submenu v-if="!item.hidden" :key="index" :index="index + ''" >
                     <!-- 一级菜单 -->
                     <template slot="title">
-                    <i :class="item.meta.icon"></i>
+                    <!-- <i :class="item.meta.icon"></i> -->
+                    <svg-icon :iconName="item.meta.icon" :iconClass="item.meta.icon" />
                     <span slot="title">{{item.meta.name}}</span>
                     </template>
                     <!-- 子菜单 -->
@@ -27,7 +29,6 @@
                 </el-submenu>
             </template>
         </el-menu>
-        <svg-icon iconName="common" iconClass="common" />
     </div>
 </template>
 
@@ -70,9 +71,15 @@ export default {
     width: $navMenu;
     height: 100vh;
     background-color: #344a5f;
-    .svg:{
-        font-style: 20px;
+    svg{
+        font-size: 20px;
         margin-right: 10px;
+    }
+    .logo{
+        img{
+            height: 100px;
+            transform: translateX(50%);
+        };
     }
 }
 
