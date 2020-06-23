@@ -1,7 +1,7 @@
 <!-- 页面 -->
 <template>
     <div id="header-wrap">
-        <svg-icon iconName="menu" iconClass="menu" />
+        <div @click="changeNavState()"><svg-icon iconName="menu" iconClass="menu" /></div>
         <div class="flex aic h100pc">
             <div class="flex aic h100pc bdr mt-10 mb-10 pr-10">
                 <img src="aa" />
@@ -15,7 +15,13 @@
 <script>
 export default {
     setup(props,{ refs , root }){
+        const changeNavState = (() => {
+            root.$store.commit('SET_COLLAPSE','')
+        })
 
+        return {
+            changeNavState
+        }
     }
 }
 </script>
@@ -23,7 +29,7 @@ export default {
 <style lang='scss' scoped>
 #header-wrap{
     position: fixed;
-    left: 250px;
+    // left: $navMenu;
     top: 0;
     right: 0;
     height: 75px;
@@ -33,8 +39,19 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    @include webkit(transition,all .3s ease);
     svg{
         font-size: 35px;
+    }
+}
+.open{
+    #header-wrap{
+        left: $navMenu;
+    }
+}
+.close{
+    #header-wrap{
+        left: $navMenuMin;
     }
 }
 </style>

@@ -33,15 +33,18 @@
 </template>
 
 <script>
-import {ref ,reactive} from '@vue/composition-api';
+import {ref ,reactive, computed} from '@vue/composition-api';
 export default {
     name: 'navMenu',
     setup(props,{ refs , root }){
         /*****************************************
          * 声明数据
          */
-        const isCollapse = ref(false);
         const routers = reactive(root.$router.options.routes)
+        /*********************
+         * computed 计算属性
+         */
+        const isCollapse = computed(() => root.$store.state.collapse);
         /******************************************
          * 声明函数
          */
@@ -68,18 +71,30 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    width: $navMenu;
+    // width: $navMenu;
     height: 100vh;
     background-color: #344a5f;
     svg{
         font-size: 20px;
         margin-right: 10px;
     }
+    @include webkit(transition,all .3s ease);
     .logo{
         img{
-            height: 100px;
-            transform: translateX(50%);
+            padding-top: 15px;
+            transform: translateX(60%);
+            width: 40%;
         };
+    }
+}
+.open{
+    #nav-wrap{
+        width: $navMenu;
+    }
+}
+.close{
+    #nav-wrap{
+        width: $navMenuMin;
     }
 }
 
