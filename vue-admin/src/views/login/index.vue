@@ -198,8 +198,15 @@ export default {
                         apiName = 'Register'
                     }
                     
-                    sha1(ruleForm.password)
-                    loginApi[apiName](ruleForm).then(res => {
+                    // sha1(ruleForm.password)
+                    let tempData = []
+                    tempData.params = ruleForm;
+                    tempData.ApiNmae = apiName
+                    // console.log(root.$store.dispatch());
+                    console.log(root.$store.commit());
+                    return
+                    root.$store.state.loginStore.dispatch('aaa',tempData).then(res => {
+                        console.log(res)
                         if(apiName == 'Register'){
                             if(res.data.resCode == '0'){
                                 root.$message({

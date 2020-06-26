@@ -16,7 +16,9 @@
 export default {
     setup(props,{ refs , root }){
         const changeNavState = (() => {
-            root.$store.commit('SET_COLLAPSE','')
+            // root.$store.commit('SET_COLLAPSE','')
+                root.$store.dispatch('setCollapse',{"name": 111})
+
         })
 
         return {
