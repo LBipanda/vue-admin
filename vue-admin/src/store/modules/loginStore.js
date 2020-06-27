@@ -1,13 +1,16 @@
 
 import loginApi from '@/api/login';
+
 export default {
+    namespaced: true,
     state: {
         collapse: false,
     },
     getters:{},
     mutations: {
     SET_COLLAPSE(state,value){
-        console.log('aaaaaaaa')
+        console.log('bbbbbbbbbbbbb');
+        
         state.collapse = !state.collapse
     }
     },

@@ -191,7 +191,7 @@ export default {
             refs[formName].validate((valid) => {
                 console.log(valid)
                 if (valid) {
-                    let apiName = menuTab.filter(res => res.isSelect == true);                    
+                    let apiName = menuTab.filter(res => res.isSelect == true);
                     if (apiName[0].text == '登录'){
                         apiName = 'Login'
                     }else{
@@ -202,11 +202,8 @@ export default {
                     let tempData = []
                     tempData.params = ruleForm;
                     tempData.ApiNmae = apiName
-                    // console.log(root.$store.dispatch());
-                    console.log(root.$store.commit());
-                    return
-                    root.$store.state.loginStore.dispatch('aaa',tempData).then(res => {
-                        console.log(res)
+                    root.$store.dispatch('appStore/toIndex',tempData).then(res => {
+                        // console.log(res)
                         if(apiName == 'Register'){
                             if(res.data.resCode == '0'){
                                 root.$message({

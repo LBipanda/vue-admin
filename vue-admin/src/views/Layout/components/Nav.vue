@@ -44,7 +44,7 @@ export default {
         /*********************
          * computed 计算属性
          */
-        const isCollapse = computed(() => root.$store.state.collapse);
+        const isCollapse = computed(() => root.$store.state.appStore.collapse);
         /******************************************
          * 声明函数
          */
