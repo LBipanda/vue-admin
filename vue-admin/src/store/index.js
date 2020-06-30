@@ -6,8 +6,6 @@ import loginStore from './modules/loginStore';
 
 Vue.use(Vuex);
 
-console.log(appStore)
-console.log(loginStore)
 export default new Vuex.Store({
   modules: {
     appStore,

@@ -4,25 +4,38 @@
         <div @click="changeNavState()"><svg-icon iconName="menu" iconClass="menu" /></div>
         <div class="flex aic h100pc">
             <div class="flex aic h100pc bdr mt-10 mb-10 pr-10">
-                <img src="aa" />
-                <p class="lh100pc ml-15">管理员</p>
+                <div class="imgHeader"><img src="@/assets/image/LBipanda.jpg" /></div>
+                <p class="lh100pc ml-15">{{username}}</p>
             </div>
-            <svg-icon iconName="main" iconClass="main" class="pl-10" />
+            <div @click="loginOut"><svg-icon iconName="main" iconClass="main" class="pl-10" /></div>
         </div>
     </div>
 </template>
 
 <script>
+import { computed } from '@vue/composition-api'
 export default {
     setup(props,{ refs , root }){
+        const username = computed(() => root.$store.state.appStore.username)
         const changeNavState = (() => {
-            // root.$store.commit('SET_COLLAPSE','')
                 root.$store.commit('appStore/SET_COLLAPSE','')
 
         })
+        const loginOut = ( ()=> {
+            root.$store.dispatch('appStore/loginOut','').then(res => {
+                console.log(res)
+                if(res == 'true'){
+                    root.$router.push({
+                        name: 'login'
+                    })
+                }
+            })
+        })
 
         return {
-            changeNavState
+            changeNavState,
+            username,
+            loginOut
         }
     }
 }
@@ -44,6 +57,12 @@ export default {
     @include webkit(transition,all .3s ease);
     svg{
         font-size: 35px;
+    }
+    .imgHeader{
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        overflow: hidden;  
     }
 }
 .open{

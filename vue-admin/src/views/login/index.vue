@@ -22,7 +22,7 @@
                 <el-form-item prop="code">
                     <label>验证码</label>
                     <el-row :gutter="15">
-                        <el-col :span="14"><el-input v-model.number="ruleForm.code" minlength="6" maxlength="6"></el-input></el-col>
+                        <el-col :span="14"><el-input v-model="ruleForm.code" minlength="6" maxlength="6"></el-input></el-col>
                         <el-col :span="10" ><el-button type="success" @click="getSms()" :disabled="SmsStatus"><span>{{SmsText}}</span></el-button></el-col>
                     </el-row>
                 </el-form-item>
@@ -189,54 +189,41 @@ export default {
         // 登录注册
         const submitForm = ((formName) => {
             refs[formName].validate((valid) => {
-                console.log(valid)
                 if (valid) {
-                    let apiName = menuTab.filter(res => res.isSelect == true);
-                    if (apiName[0].text == '登录'){
-                        apiName = 'Login'
-                    }else{
-                        apiName = 'Register'
-                    }
-                    
-                    // sha1(ruleForm.password)
-                    let tempData = []
-                    tempData.params = ruleForm;
-                    tempData.ApiNmae = apiName
-                    root.$store.dispatch('appStore/toIndex',tempData).then(res => {
-                        // console.log(res)
-                        if(apiName == 'Register'){
-                            if(res.data.resCode == '0'){
-                                root.$message({
-                                    message: res.data.message,
-                                    type: 'success'
-                                });
-                                changeMenu(menuTab[0])
-                            }else{
-                                root.$message({
-                                    message: res.data.message,
-                                    type: 'error'
-                                });
-                            }
-                        }else{
-                            if(res.data.resCode == '0'){
-                                root.$message({
-                                    message: res.data.message,
-                                    type: 'success'
-                                });
-                                root.$router.push({
-                                    name: 'console'
-                                })
-                            }
-                        }
-                    }).catch(err => {
-                        console.log(err)
-                    })
+                    menuTab[0].isSelect?login():register()
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
         })
+        const login = () => {
+            root.$store.dispatch('appStore/toLogin',ruleForm).then(res => {
+                if(res.data.resCode == '0'){
+                    // 页面跳转
+                    root.$router.push({
+                        name: 'console'
+                    })
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        const register = ()=> {
+            loginApi.Register(ruleForm).then(res => {
+                if(res.data.resCode == '0'){
+                    root.$message({
+                        message: res.message,
+                        type: 'success'
+                    })
+                    changeMenu(menuTab[0])
+                    SmsStatus.value = false
+                    SmsText.value = "重新获取验证码"
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }
         /**************************************************************
          * 生命周期（挂载完成后）
          */

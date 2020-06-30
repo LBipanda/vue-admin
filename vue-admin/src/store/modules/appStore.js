@@ -1,5 +1,6 @@
 
 import loginApi from '@/api/login';
+import app from '@/utils/app';
 
 export default {
     namespaced: true,
@@ -21,16 +22,27 @@ export default {
         }
     },
     actions: {
-        toIndex({commit},value){
-            console.log(value.ApiNmae)
-            let tempName = value.ApiNmae
+        toLogin({commit},value){
             return new Promise((resolve,reject) => {
-            loginApi[value.ApiNmae](value.params).then(res => {
-                console.log(tempName)
+            loginApi.Login(value).then(res => {
+                let tempRes = res.data.data;
+                commit('SET_TOKEN',tempRes.token) 
+                commit('SET_USERNAME',tempRes.username)
+                app.setToken(tempRes.token)
+                app.setUserName(tempRes.username) 
                 resolve(res)
             }).catch(err =>{
                 reject(err)
             })
+            })
+        },
+        loginOut({ commit }, value){
+            return new Promise((resolve,reject)=>{
+                app.removeToken();
+                app.removeUserName();
+                commit("SET_TOKEN", '');
+                commit("SET_USERNAME", '');
+                resolve('true')
             })
         }
     },
