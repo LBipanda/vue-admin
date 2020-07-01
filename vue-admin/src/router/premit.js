@@ -13,6 +13,9 @@ export default router.beforeEach((to, from, next) => {
             app.removeUserName();
             store.commit("appStore/SET_TOKEN", '');
             store.commit("appStore/SET_USERNAME", '');
+        }else{
+            //获取用户角色
+            //动态分配路由
         }
         next()
     }else{
