@@ -13,6 +13,9 @@ Vue.use(VueCompositionApi)
 Vue.use(ElementUI);
 //自定义全局组件SVG
 import '@/icons/index.js'
+//引用自定义的全局方法
+import global from './utils/global'
+Vue.use(global)
 
 new Vue({
   router,

@@ -11,6 +11,9 @@ export default {
     removeToken(token){
         cookie.remove('admin_token')
     },
+    getUserName(){
+        return cookie.get('username')
+    },
     setUserName(username){
         cookie.set('username',username)
     },

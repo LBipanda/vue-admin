@@ -6,6 +6,7 @@ $navMenuMin: 64px;
 $navHeader: 75px;
 //主颜色
 $mainColor: #f56c6c;
+
 //
 @mixin webkit($type,$value){
     -webkit-#{$type}: $value;

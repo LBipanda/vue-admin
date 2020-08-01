@@ -36,5 +36,16 @@
     Promise.all([one,two,three]).then(res => {
         console.log('all OK')
     })
+    let aaa = {
+        a:'1',
+        b:'2'
+    }
+    let bbb = []
+    for(item in aaa){
+        console.log(item)
+        bbb.push(item)
+    }
+    console.log(aaa.reverse())
+    let ccc = {}
 </script>
 </html>
