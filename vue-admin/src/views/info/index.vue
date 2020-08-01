@@ -54,8 +54,8 @@
             <el-table-column prop="user" label="管理人"> </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button
-                    size="mini" type="primary" @click="editInfo(scope.row.id)">编辑</el-button>
+                    <el-button size="mini" type="primary" @click="editInfo(scope.row.id)">编辑</el-button>
+                    <el-button size="mini" type="primary" @click="editInfo(scope.row.id)">编辑详情</el-button>
                     <!-- @click="handleEdit(scope.$index, scope.row)" -->
                     <el-button size="mini" type="danger" @click="deleteInfo(scope.row)">删除</el-button>
                     <!-- @click="handleDelete(scope.$index, scope.row)" -->
