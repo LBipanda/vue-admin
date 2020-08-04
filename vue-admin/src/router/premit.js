@@ -7,7 +7,6 @@ const whiteRouter = ['/login'];//indexOf方法，判断数组中是否有某个�
 export default router.beforeEach((to, from, next) => {
     //to and from are Route Object,next() must be called to resolve the hook}
     if(app.getToken()){
-        console.log("存在");
         if(to.path === '/login'){
             app.removeToken();
             app.removeUserName();
@@ -21,10 +20,8 @@ export default router.beforeEach((to, from, next) => {
     }else{
         console.log(whiteRouter.indexOf(to.path))
         if(whiteRouter.indexOf(to.path) !== -1){
-            console.log("不存在1");
             next();
         }else{
-            console.log("不存在2");
             next('/login');
         }
     }

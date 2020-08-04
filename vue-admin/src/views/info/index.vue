@@ -55,7 +55,11 @@
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button size="mini" type="primary" @click="editInfo(scope.row.id)">编辑</el-button>
-                    <el-button size="mini" type="primary" @click="editInfo(scope.row.id)">编辑详情</el-button>
+                    <!-- <router-link to="/infoCategoryDetail/11/22"> -->
+                    <!-- <router-link :to="{ path: `/infoCategoryDetail/${scope.row.id}/${scope.row.title}` }"> -->
+                        <!-- <el-button size="mini" type="success" @click="editInfo(scope.row.id)">编辑详情</el-button> -->
+                    <!-- </router-link> -->
+                        <el-button size="mini" type="success" @click="infoDetail(scope.row)">编辑详情</el-button>
                     <!-- @click="handleEdit(scope.$index, scope.row)" -->
                     <el-button size="mini" type="danger" @click="deleteInfo(scope.row)">删除</el-button>
                     <!-- @click="handleDelete(scope.$index, scope.row)" -->
@@ -136,7 +140,6 @@ export default {
         });
         // 方法
         const handleSizeChange = ((value) => {
-            console.log(value);
             tableData.pageSize = value;
             search()
         })
@@ -146,13 +149,11 @@ export default {
         })
         //编辑
         const editInfo = (item)=>{
-            console.log(item)
             infoId.value = item
             editInfoStatus.value = true
         }
         // 删除
         const deleteInfo = ((item) => {
-            console.log(item)
             // vue3.0全局方法封装
             // confirm({
             //     content:'确认删除当前信息，确认后无法恢复!!',
@@ -168,7 +169,6 @@ export default {
         })
 
         const VueconfireDelete = ((item) => {
-            console.log(item)
             infoApi.deleteInfo({id: item}).then(res => {
                 if(res.data.resCode == '0'){
                     root.$message({
@@ -202,7 +202,6 @@ export default {
             // })
             //获取分类有子级vuex
             root.$store.dispatch('commonStore/getCategoryAll','').then(res => {
-                console.log('getCategoryAll',res)
                 if(res.data.resCode == '0'){
                     options.category = res.data.data
                 }
@@ -228,7 +227,6 @@ export default {
                 pageNumber: tableData.nowPage,
                 pageSize: tableData.pageSize
             }
-            console.log(data)
             getListInfo(data)
         })
         //获取表格数据
@@ -236,7 +234,6 @@ export default {
             tableLoading.value = true
             infoApi.GetListInfo(params).then(res => {
                 tableLoading.value = false
-                console.log(res)
                 let data = res.data.data
                 if(res.data.resCode == '0'){
                     tableData.list = data.data
@@ -250,6 +247,16 @@ export default {
             }).catch(err => {
                 tableLoading.value = false
             })
+        }
+        //跳转到详情页面
+        const infoDetail = (item) => {
+            root.$router.push({
+                path: `/infoCategoryDetail/${item.id}/${item.title}`,
+            })
+            // root.$router.push({
+            //     name: 'infoCategoryDetail',
+            //     query: item
+            // })
         }
 
         // 饿了么UIformatter日期格式
@@ -284,6 +291,7 @@ export default {
             handleSizeChange,
             handleCurrentChange,
             editInfo,
+            infoDetail,
             deleteInfo,
             VueconfireDelete,
             search,

@@ -103,11 +103,9 @@ export default {
                 pageNumber: 1,
                 pageSize: 1
             }
-            console.log(tempData)
             infoAPi.GetListInfo(tempData).then(res => {
                 if(res.data.resCode == '0'){
                     let tempRes = res.data.data.data[0]
-                    console.log(tempRes)
                     data.form.categoryId = tempRes.categoryId
                     data.form.title = tempRes.title
                     data.form.content = tempRes.content
@@ -122,9 +120,7 @@ export default {
             })
         }
         const editInfo = () => {
-            console.log(data.form)
             infoAPi.EditInfo(data.form).then(res => {
-                console.log(res)
                 if(res.data.resCode == '0'){
                     root.$message({
                         type: 'success',

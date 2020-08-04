@@ -3,9 +3,11 @@ import infoApi from '@/api/info';
 export default {
     namespaced: true,
     state: {
-        collapse: false,
+        qiniuUrl: "http://www-web-jshtml-cn-idva7mx.web-jshtml.cn/"
     },
-    getters:{},
+    getters:{
+        qiniuUrl: state => state.qiniuUrl
+    },
     mutations: {
         SET_COLLAPSE(state,value){
             console.log('bbbbbbbbbbbbb');
