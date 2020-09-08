@@ -15,6 +15,11 @@ Vue.use(ElementUI);
 import '@/icons/index.js'
 //引用自定义的全局方法
 import global from './utils/global'
+// 全局方法引入按钮权限(通过v-if)
+import { buttonPermission } from "./utils/rolesButtom";
+Vue.prototype.btnPerm = buttonPermission;
+// 自定义指令按钮权限
+import "./utils/buttonPerm";
 Vue.use(global)
 
 new Vue({

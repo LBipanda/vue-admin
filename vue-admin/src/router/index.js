@@ -9,7 +9,32 @@ const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
+/**
+ * 1、系统分配
+ * 2、角色分配
+ * 3、按钮级别分配
+ *
+ * 工作：路由是前台配，还是后台配的问题？
+ * 
+ * 个人建议，前端配置，这样才能达到前后端分离的工作；
+ * 
+ * 1、后台配置路由，前端人不在的情况；没办法页面跳转；
+ * 2、新的需求，前端把路由配好了，后台的人不在，没办法找到路由；
+ * 
+ */
+
+/**
+ * 
+ * 1、默认路由
+ * 2、动态路由
+ */
 const routes = [
+];
+
+/**
+ * 默认路由
+ */
+export const defaultRouterMap = [
   {
     path: "/",
     redirect: "/login",
@@ -47,30 +72,21 @@ const routes = [
       }
     ]
   },
-  {
-    path: "/user",
-    name: "user",
-    component: Layout,
-    meta:{
-      name: '用户管理',
-      icon: 'user'
-    },
-    children:[
-      {
-        path: "/userList",
-        name: "userList",
-        component: () => import("@/views/user/userList.vue"),
-        meta:{
-          name: '用户列表'
-        }
-      }
-    ]
-  },
+  
+]
+
+/**
+ * 动态路由
+ * 角色：sale, technician, manager
+ */
+export const asyncRouterMap = [
   {
     path: "/info",
     name: "info",
     component: Layout,
     meta:{
+      role: ['sale', 'manager'],
+      system: 'infoSystem',
       name: '信息管理',
       icon: 'info'
     },
@@ -101,11 +117,32 @@ const routes = [
         },
       },
     ]
-  }
-];
+  },
+  {
+    path: "/user",
+    name: "user",
+    component: Layout,
+    meta:{
+      role: ['sale'],
+      system: 'userSystem', // 自定义key
+      name: '用户管理',
+      icon: 'user'
+    },
+    children:[
+      {
+        path: "/userList",
+        name: "userList",
+        component: () => import("@/views/user/userList.vue"),
+        meta:{
+          name: '用户列表'
+        }
+      }
+    ]
+  },
+]
 
 const router = new VueRouter({
-  routes
+  routes: defaultRouterMap
 });
 
 export default router;

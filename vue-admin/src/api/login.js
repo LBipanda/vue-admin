@@ -31,4 +31,14 @@ Login(data){
         data: data
     })
 },
+/**
+ * 获取用户角色
+ */
+GetUserRole(data = {}){
+    return service.request({
+        method: 'post',
+        url: '/userRole/',
+        data: data
+    })
+},
 }

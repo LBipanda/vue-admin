@@ -15,18 +15,18 @@
             console.log('one Ok');
         },3000)
     })
-    // let two = new Promise((resolve,reject) => {
-    //     setTimeout(()=> {
-    //         resolve('two')
-    //         console.log('two Ok');
-    //     },2000)
-    // })
-    let two = function(){
-        setTimeout(()=>{
+    let two = new Promise((resolve,reject) => {
+        setTimeout(()=> {
+            resolve('two')
             console.log('two Ok');
-            return 'two'
         },2000)
-    }()
+    })
+    // let two = function(){
+    //     setTimeout(()=>{
+    //         console.log('two Ok');
+    //         return 
+    //     },2000)
+    // }()
     let three = new Promise((resolve,reject) => {
         setTimeout(()=> {
             resolve('three')
@@ -34,18 +34,8 @@
         },1000)
     })
     Promise.all([one,two,three]).then(res => {
+        console.log(res)
         console.log('all OK')
     })
-    let aaa = {
-        a:'1',
-        b:'2'
-    }
-    let bbb = []
-    for(item in aaa){
-        console.log(item)
-        bbb.push(item)
-    }
-    console.log(aaa.reverse())
-    let ccc = {}
 </script>
 </html>

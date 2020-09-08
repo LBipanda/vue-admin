@@ -8,8 +8,13 @@ export default {
         collapse: false,//侧边栏的缩放
         to_ken: '',
         username: '',
+        roles: [],//登录客户角色
+        buttons: [],//登录客户的按钮权限
     },
-    getters:{},
+    getters:{
+        roles: state => state.roles,
+        buttons: state => state.buttons
+    },
     mutations: {
         SET_COLLAPSE(state,value){ //改变侧边栏的状态
             state.collapse = !state.collapse
@@ -19,6 +24,13 @@ export default {
         },
         SET_USERNAME(state,value){ //
             state.username = value
+        },
+        SET_ROLES(state,value){
+            state.roles = value
+        },
+        SET_BUTTONS(state,value){ //
+            console.log("button",value)
+            state.buttons = value
         }
     },
     actions: {
@@ -42,8 +54,10 @@ export default {
                 app.removeUserName();
                 commit("SET_TOKEN", '');
                 commit("SET_USERNAME", '');
+                commit('SET_ROLES', []);
                 resolve('true')
             })
-        }
+        },
+        
     },
 }

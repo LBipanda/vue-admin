@@ -39,10 +39,10 @@
             </el-col>
             <el-col :span="6" class="flex jc-sb">
                 <el-input v-model="serchValue" placeholder="请输入内容"></el-input>
-                <el-button type="danger" @click="search('search')">搜索</el-button>
+                <el-button type="danger" @click="search('search')" v-btnPerm="'info.edit'" class="dsn" >搜索</el-button>
             </el-col>
             <el-col :span="2" style="float:left">
-                <el-button type="primary" class="ml-10" @click="addInfoStatus = true">新增</el-button>
+                <el-button type="primary" class="ml-10" @click="addInfoStatus = true" v-if="btnPerm('info.edit')">新增</el-button>
             </el-col>
         </el-row>  
         <!-- 表格  -->
@@ -306,5 +306,11 @@ export default {
 label{
     width: 80px;
     line-height: 40px;
+}
+.dsn{
+    display: none;
+}
+.dsb{
+    display: block;
 }
 </style>
