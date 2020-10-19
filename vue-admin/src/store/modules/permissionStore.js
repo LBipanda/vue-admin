@@ -16,7 +16,8 @@ export default {
     },
     mutations: {
         SET_ROUTER(state, router) {
-            state.addRouters = defaultRouterMap.concat(router)
+            state.addRouters = router
+            // state.addRouters = defaultRouterMap.concat(router)
         }
     },
     actions: {
@@ -41,7 +42,7 @@ export default {
                 }else{ // 普通管理员
                     addRouters = asyncRouterMap.filter(item => {
                         if(hasPremission(role, item)) {
-                            // 优先判断 
+                            // 优先判断
                             if(item.children && item.children.length > 0) {
                                 item.children = item.children.filter(child => {
                                     if(hasPremission(role, child)){

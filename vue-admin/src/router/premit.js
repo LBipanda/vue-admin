@@ -28,15 +28,13 @@ export default router.beforeEach((to, from, next) => {
                     let btnPerm = res.btnPerm;
                     store.commit("appStore/SET_ROLES", role);
                     store.commit("appStore/SET_BUTTONS", button);
-                    // 存储角色 
+                    // 存储角色
                     store.dispatch('permissionStore/createRolerouter', role).then(response => {
-                        console.log(router)
                         let addRouters = store.getters['permissionStore/addRouters'];
                         // 路由更新
                         router.options.routes = router.options.routes.concat(addRouters);
                         // 添加动态路由
                         router.addRoutes(addRouters)
-                        console.log(router)
                         next({ ...to, replace: true});
                         // es6扩展运算符，防止内容发生变化的情况
                         // 不被记录历史记录
